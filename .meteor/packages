@@ -5,11 +5,11 @@
 # but you can also edit it by hand.
 
 meteor-base
-autopublish
-insecure
-session
 blaze-html-templates
 mongo
+session
 random
+ecmascript
 standard-minifier-css
 standard-minifier-js
+shell-server
