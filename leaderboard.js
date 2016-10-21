@@ -4,30 +4,34 @@
 Players = new Mongo.Collection("players");
 
 if (Meteor.isClient) {
+  Template.leaderboard.onCreated(function() {
+    this.subscribe('scientists');
+  });
+
   Template.leaderboard.helpers({
-    players: function () {
-      return Players.find({}, { sort: { score: -1, name: 1 } });
+    players() {
+      return Players.find({}, {sort: {score: -1, name: 1}});
     },
-    selectedName: function () {
-      var player = Players.findOne(Session.get("selectedPlayer"));
+    selectedName() {
+      let player = Players.findOne(Session.get("selectedPlayer"));
       return player && player.name;
     }
   });
 
   Template.leaderboard.events({
-    'click .inc': function () {
-      Players.update(Session.get("selectedPlayer"), {$inc: {score: 5}});
+    'click .inc'() {
+      Meteor.call('incScore', Session.get("selectedPlayer"));
     }
   });
 
   Template.player.helpers({
-    selected: function () {
+    selected() {
       return Session.equals("selectedPlayer", this._id) ? "selected" : '';
     }
   });
 
   Template.player.events({
-    'click': function () {
+    'click'() {
       Session.set("selectedPlayer", this._id);
     }
   });
@@ -35,16 +39,31 @@ if (Meteor.isClient) {
 
 // On server startup, create some players if the database is empty.
 if (Meteor.isServer) {
-  Meteor.startup(function () {
+  Meteor.startup(() => {
     if (Players.find().count() === 0) {
-      var names = ["Ada Lovelace", "Grace Hopper", "Marie Curie",
-                   "Carl Friedrich Gauss", "Nikola Tesla", "Claude Shannon"];
-      _.each(names, function (name) {
-        Players.insert({
-          name: name,
-          score: Math.floor(Random.fraction() * 10) * 5
-        });
+      let names = [
+        "Ada Lovelace",
+        "Grace Hopper", 
+        "Marie Curie",
+        "Carl Friedrich Gauss",
+        "Nikola Tesla",
+        "Claude Shannon"
+      ];
+      names.forEach(name => {
+        let score = Math.floor(Random.fraction() * 10) * 5;
+        Players.insert({name, score});
       });
+    }
+  });
+
+  Meteor.publish('scientists', function() {
+    return Players.find({});
+  });
+
+  Meteor.methods({
+    incScore(player) {
+      if (!player) return;
+      Players.update(player, {$inc: {score: 5}});
     }
   });
 }
