@@ -1,4 +1,4 @@
-import { Meteor } from 'meteor/meteor';
+import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
 import { Mongo } from "meteor/mongo";
 import { Session } from "meteor/session";
@@ -17,40 +17,48 @@ if (Meteor.isClient) {
     selectedName: function () {
       const player = Players.findOne(Session.get("selectedPlayer"));
       return player && player.name;
-    }
+    },
   });
 
   Template.leaderboard.events({
-    'click .inc': function () {
-      Players.update(Session.get("selectedPlayer"), {$inc: {score: 5}});
-    }
+    "click .inc": function () {
+      Players.update(Session.get("selectedPlayer"), { $inc: { score: 5 } });
+    },
   });
 
   Template.player.helpers({
     selected: function () {
-      return Session.equals("selectedPlayer", this._id) ? "selected" : '';
-    }
+      return Session.equals("selectedPlayer", this._id) ? "selected" : "";
+    },
   });
 
   Template.player.events({
-    'click': function () {
+    click: function () {
       Session.set("selectedPlayer", this._id);
-    }
+    },
   });
 }
 
 // On server startup, create some players if the database is empty.
 if (Meteor.isServer) {
-  Meteor.startup(function () {
-    if (Players.find().count() === 0) {
-      const names = ["Ada Lovelace", "Grace Hopper", "Marie Curie",
-                   "Carl Friedrich Gauss", "Nikola Tesla", "Claude Shannon"];
-      names.forEach(function (name) {
-        Players.insert({
-          name: name,
-          score: Math.floor(Random.fraction() * 10) * 5
+  Meteor.startup(async () => {
+    const names = [
+      "Ada Lovelace",
+      "Grace Hopper",
+      "Marie Curie",
+      "Carl Friedrich Gauss",
+      "Nikola Tesla",
+      "Claude Shannon",
+    ];
+
+    const playerCount = await Players.find().countAsync();
+    if (playerCount === 0) {
+      for (const name of names) {
+        await Players.insertAsync({
+          name,
+          score: Math.floor(Random.fraction() * 10) * 5,
         });
-      });
+      }
     }
   });
 }
