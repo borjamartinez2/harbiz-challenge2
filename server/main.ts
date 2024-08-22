@@ -27,7 +27,7 @@ Meteor.startup(function () {
       if (count === 0) {
         Object.values(PLAYER_TYPE).forEach((value) => {
           for (let i = 0; i < 6; i++) {
-            Players.insert({
+            Players.insertAsync({
               name: generateRandomName(),
               score: Math.floor(Random.fraction() * 10) * 5,
               playerType: value,
