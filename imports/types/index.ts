@@ -1,3 +1,3 @@
-import { PLAYER_TYPE, Player } from "./player";
+import { PLAYER_TYPE, Player } from './player'
 
-export { PLAYER_TYPE, Player };
+export { PLAYER_TYPE, Player }
