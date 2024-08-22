@@ -1,0 +1,19 @@
+<template name="playerList">
+    <div class="players-list">
+        <span class="list-description">
+            {{ listDescription }}
+        </span>
+        <ol class="leaderboard">
+            {{#each players}}
+                {{> player}}
+            {{/each}}
+        </ol>
+    </div>
+</template>
+
+<template name="player">
+    <li class="player {{selected}}">
+      <span class="name">{{name}}</span>
+      <span class="score">{{score}}</span>
+    </li>
+  </template>

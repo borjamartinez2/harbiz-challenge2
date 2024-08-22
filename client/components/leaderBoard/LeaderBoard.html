@@ -1,0 +1,23 @@
+<template name="leaderboardView">
+  <div class="outer">
+    <div class="logo"></div>
+    <h1 class="title">Leaderboard</h1>
+    {{> leaderboard}}
+  </div>
+</template>
+
+<template name="leaderboard">
+  <div class="player-list-container">
+    {{#each groupedPlayers}}
+      {{> playerList players=this.players playersType=this.playerType}}
+    {{/each}}
+  </div>
+    {{#if selectedPlayer}}
+      {{> selectedPlayerInfo }}
+    {{else}}
+      <div class="message">Click a player to select</div>
+    {{/if}}
+</template>
+
+
+

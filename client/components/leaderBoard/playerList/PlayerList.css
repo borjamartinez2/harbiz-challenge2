@@ -1,0 +1,79 @@
+.players-list {
+  background-color: #ffffe3;
+  width: 320px;
+  .list-description {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 25px 0;
+    color: #8d8d8d;
+  }
+
+  .leaderboard {
+    border-top: 1px solid #f1f1f1;
+    counter-reset: ol-counter;
+    list-style-type: none;
+    margin: 0 0 1.5em;
+    padding: 0;
+  }
+  
+  .player {
+      border-bottom: 1px solid #f1f1f1;
+      cursor: pointer;
+      padding: 0.5em 0;
+      position: relative;
+      overflow: hidden;
+      transition: background 300ms ease-out, border-color 300ms ease-out;
+      border-left: 4px solid white;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    
+      &:before {
+        color: #999;
+        content: counter(ol-counter);
+        counter-increment: ol-counter;
+        display: inline-block;
+        font-weight: 300;
+        text-align: center;
+        width: 3em;
+        line-height: 1.5;
+      }
+    
+      .avatar {
+        margin-right: 1em;
+        display: inline-block;
+        vertical-align: middle;
+        border-radius: 50%;
+        overflow: hidden;
+      }
+    
+      .name {
+        display: inline-block;
+        font-size: 1.25em;
+        font-weight: 300;
+        vertical-align: middle;
+      }
+    
+      .score {
+        color: #333;
+        display: block;
+        float: right;
+        font-size: 1.25em;
+        font-weight: 600;
+        line-height: 2.4em;
+        padding-right: 1.25em;
+      }
+    
+      &.selected {
+        background-color: #fefff4;
+        border-left: 4px solid #eb5f3a;
+      }
+    
+      &:hover {
+        background-color: #fefff4;
+      }
+    }
+      
+}
+
